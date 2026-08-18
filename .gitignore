@@ -3,4 +3,5 @@ venv/
 __pycache__/
 *.pyc
 .env
-.vscode/
+products.index 
+product_ids.json 

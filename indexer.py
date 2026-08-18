@@ -15,26 +15,25 @@ model, preprocess = clip.load("ViT-B/32", device="cpu")
 model.eval()
 
 def fetch_products_from_django():
-    """Récupère les produits depuis ton API Django avec gestion de pagination."""
     products_list = []
     limit = 100
     offset = 0
-    
+
     while True:
         url = f"{DJANGO_API_URL}?limit={limit}&offset={offset}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()
-        
-        # Adapte 'data["results"]' selon la structure réelle de ton JSON
         results = data.get("results", [])
+
         if not results:
             break
-            
+
         products_list.extend(results)
         offset += limit
+
         print(f"Récupération : {len(products_list)} produits chargés...")
-        
+
     return products_list
 
 def encode_image_from_url(url: str):
